@@ -2,6 +2,9 @@ require './canhelplib'
 module CanhelpPlugin
   include Canhelp
 
+#grades all users in the course
+#grades all assignments if assignment id is blank
+
   def grade_submission(token, canvas_url, course_id, assignment_id, user_id, grade)
     canvas_put("#{canvas_url}/api/v1/courses/#{course_id}/assignments/#{assignment_id}/submissions/#{user_id}", token, {
       submission: {
@@ -10,11 +13,12 @@ module CanhelpPlugin
     })
   end
   def self.grade_all_old(
-    canvas_url = prompt(:canvas_url),
+    subdomain = prompt(:subdomain),
     course_id = prompt(:course_id),
     assignment_id = prompt(:assignment_id)
   )
     token = get_token
+    canvas_url = "https://#{subdomain}.instructure.com"
     users = get_json_paginated(token, "#{canvas_url}/api/v1/courses/#{course_id}/users")
     puts "#{users.count} users found"
     user_ids = users.map do |user|

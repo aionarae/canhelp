@@ -12,24 +12,22 @@ module CanhelpPlugin
     })
   end
 
-  def self.remove_enrollment(subdomain=nil, user_id=nil)
+  def self.remove_enrollment(
+    subdomain = prompt(:subdomain),
+    user_id = prompt(:user_id)
+  )
     token = get_token
-    subdomain ||= prompt(:subdomain)
-    user_id ||= prompt(:user_id)
-
     canvas_url = "https://#{subdomain}.instructure.com"
 
     puts canvas_url
     puts "#{canvas_url}/api/v1/users/#{user_id}/enrollments"
-
     puts "Finding enrollments..."
 
-    enrollment_list = get_json_paginated(token,"#{canvas_url}/api/v1/#{user_id}/enrollments")
+    enrollment_list = get_json_paginated(token,"#{canvas_url}/api/v1/users/#{user_id}/enrollments")
 
     puts "#{enrollment_list.count} enrollments found. Deleting..."
 
     enrollment_id = []
-
     enrollment_list.each do |e|
       enrollment_id << e['id']
       delete_enrollment(token, canvas_url, e['course_id'], e['id'], task = "delete")

@@ -17,7 +17,7 @@ module CanhelpPlugin
     account_id = prompt(:account_id),
     teacher_count = prompt(:teacher_count),
     student_count = prompt(:student_count),
-    ta_count = prompt(:teacher_count),
+    ta_count = prompt(:ta_count),
     designer_count = prompt(:designer_count),
     observer_count = prompt(:observer_count),
     prefix = prompt(:prefix),
